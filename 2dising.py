@@ -104,21 +104,21 @@ def sumSP(sp,nl,n):
 	return sum
 
 
-#-----PARAMETERS----------------------------
-nx=50
-ny=50
+#-----------------------------------------
+nx=20
+ny=20
 J=1
 kb=1
 mo=1
-Ti=1
-Tf=1
-Bi=2
-Bm=-2
+Ti=0.5
+Tf=0.5
+Bi=3
+Bm=-3
 N=nx*ny
 s=initspins(N)
 nbrs=nn(nx,ny)
 
-frps=30
+frps=1
 sec=30
 nf=frps*sec
 deltaB=Bm-Bi
@@ -130,7 +130,7 @@ dB=2*deltaB/nf
 ns=1000*N
 rkbt=1/(kb*Ti)
 for j in range(int(ns)):
-	i=int((N-1)*rnd.random())
+	i=int(N*rnd.random())
 	dE=2*s[i]*((J*sumNN(i,s,nbrs))+(Bi*mo))
 	if dE<=0:
 		s[i]=-s[i]
@@ -174,7 +174,7 @@ def run(frame):
 	#print ("T = %f" %T)
 	#print ("B = %f" %B)
 	for j in range(ns):
-		i=int((N-1)*rnd.random())
+		i=int(N*rnd.random())
 		dE=2*s[i]*((J*sumNN(i,s,nbrs))+(B*mo))
 		if dE<=0:
 			s[i]=-s[i]
@@ -275,8 +275,15 @@ def run(frame):
 		plt.ylim([min(MA)-0.2*abs(min(MA)),max(MA)+0.2*abs(max(MA))])
 		ax=plt.gca()
 		ax.set_facecolor('xkcd:black')
+	#else:
+	#-----EXTRINSIC-----
+	#	plt.subplot(224)
+	#	setplot(0,1,0,1)
+	#	ax=plt.gca()
+	#	ax.xaxis.set_ticklabels([])
+	#	ax.xaxis.set_ticks_position('none')
 
 ani=animation.FuncAnimation(fig,run,frames=nf)
-writervideo=animation.FFMpegWriter(fps=frps)
-ani.save('2dising.mp4',writer=writervideo)
+#writervideo=animation.FFMpegWriter(fps=frps)
+#ani.save('2dising.mp4',writer=writervideo)
 plt.show()
